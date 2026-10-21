@@ -99,10 +99,7 @@ so no CORS setup is needed locally — CORS is still configured on the backend
 
 ### CI
 
-The monorepo's shared
-`.github/workflows/event-driven-ml-forecasting-platform-ci.yml` runs on every
-push/PR to `main` that touches this folder (path-filtered, same convention as
-every other project in `Portfolio-Projects`): a `backend` job runs the Spark
+`.github/workflows/ci.yml` runs on every push/PR to `main`: a `backend` job runs the Spark
 ETL parity suite, the pytest smoke suite, and the Kafka layer's broker-free
 unit tests; a `frontend` job runs `npm run build`. Both LSTM checkpoints are
 committed so CI doesn't retrain from scratch; if a checkpoint is ever
@@ -111,12 +108,11 @@ automatically.
 
 ### Project history
 
-This project began as `TensorFlow-PyTorch-Forecasting-Dashboard`, a sibling
-folder in the `Portfolio-Projects` monorepo. This folder is a separate,
-self-contained project in that same monorepo — copied from the original as a
-starting point, then built up with Spark, Kafka, and Airflow (event-driven ML
-platform). `TensorFlow-PyTorch-Forecasting-Dashboard` remains unchanged,
-in place, alongside this folder in `github.com/MAOFILHO/Portfolio-Projects`.
+This project began as `TensorFlow-PyTorch-Forecasting-Dashboard`
+(`github.com/MAOFILHO/TensorFlow-PyTorch-Forecasting-Dashboard`) — copied from
+it as a starting point, then built up with Spark, Kafka, and Airflow
+(event-driven ML platform). Both started in the `Portfolio-Projects` monorepo
+and were later split into their own repositories.
 
 ## Architecture
 

@@ -14,7 +14,7 @@
 ![Docker Compose](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat&logo=docker&logoColor=white&labelColor=1a1a2e)
 ![Azure](https://img.shields.io/badge/Azure-optional_deploy-0078D4?style=flat&logo=microsoftazure&logoColor=white&labelColor=1a1a2e)
 
-[![CI](https://github.com/MAOFILHO/Portfolio-Projects/actions/workflows/event-driven-ml-forecasting-platform-ci.yml/badge.svg)](https://github.com/MAOFILHO/Portfolio-Projects/actions/workflows/event-driven-ml-forecasting-platform-ci.yml)
+[![CI](https://github.com/MAOFILHO/Event-Driven-ML-Forecasting-Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/MAOFILHO/Event-Driven-ML-Forecasting-Platform/actions/workflows/ci.yml)
 
 
 
@@ -420,10 +420,8 @@ event-driven-ml-forecasting-platform/
 └── README.md
 ```
 
-CI (`event-driven-ml-forecasting-platform-ci.yml`) and the two cloud deploy/teardown workflows live
-at the monorepo root's `.github/workflows/`, not inside this folder — GitHub Actions only discovers
-workflow files there, which matters in a monorepo like this one. See
-["Publishing to GitHub"](#publishing-to-github) below.
+CI (`ci.yml`) and the two cloud workflows (`deploy.yml`, `teardown.yml`) live in `.github/workflows/`.
+See ["Publishing to GitHub"](#publishing-to-github) below.
 
 
 
@@ -730,8 +728,8 @@ so the dashboard picks them up immediately. `docker compose down` (from `airflow
 
 ### 8. Continuous Integration (CI) — GitHub Actions
 
-[`event-driven-ml-forecasting-platform-ci.yml`](https://github.com/MAOFILHO/Portfolio-Projects/actions/workflows/event-driven-ml-forecasting-platform-ci.yml)
-runs on every push and pull request to `main` touching this folder: a `backend` job installs
+[`ci.yml`](.github/workflows/ci.yml)
+runs on every push and pull request to `main`: a `backend` job installs
 `requirements.txt`, sets up JDK 17 for Spark, then runs the Spark ETL parity suite, the full model
 smoke suite, and the Kafka layer's broker-free unit tests (producer serialization, consumer windowing
 logic, streaming endpoint) — all **without a live Kafka broker or Airflow**, keeping CI fast and $0
@@ -824,7 +822,7 @@ are randomly generated at boot — never the repo's local-dev `admin/admin` plac
 at the end of `deploy` and never committed anywhere. Kafka stays unpublished regardless (nothing
 outside the VM's own Docker network needs to reach it directly).
 
-**GitHub Actions**: `event-driven-ml-forecasting-platform-{deploy,teardown}.yml` run the same CLI via
+**GitHub Actions**: `deploy.yml` and `teardown.yml` run the same CLI via
 `workflow_dispatch`, using OIDC against a dedicated, narrowly-scoped Azure AD app/custom role
 (VM/network/Log Analytics/deployments only — no Storage, Key Vault, or role-assignment access, so a
 compromised or misused run can't reach anything outside this project even within the same
@@ -838,7 +836,7 @@ subscription).
 >
 > Concretely: GitHub mints a short-lived, cryptographically signed token describing the run — which
 > repository, which branch, which workflow. Azure is configured to trust that issuer for exactly one
-> subject (`repo:MAOFILHO/Portfolio-Projects:ref:refs/heads/main`) and exchanges the token for an
+> subject (`repo:MAOFILHO/Event-Driven-ML-Forecasting-Platform:ref:refs/heads/main`) and exchanges the token for an
 > access token limited to this project's custom role.
 >
 > The practical consequence is that **no secret exists anywhere**. There's no client secret in GitHub,
@@ -1045,13 +1043,11 @@ is required. `.env` files are git-ignored; only `.env.example` files are committ
 
 ## Project history
 
-This project began as `TensorFlow-PyTorch-Forecasting-Dashboard`, a sibling folder in the
-[`Portfolio-Projects`](https://github.com/MAOFILHO/Portfolio-Projects) monorepo — the original batch
-dashboard: TensorFlow and PyTorch with just pandas + FastAPI + React. This project is a
-separate, self-contained folder in that same monorepo — copied from the original as a starting point,
-then built up with the event-driven layers (Spark ETL, Kafka streaming, Airflow orchestration) without
-touching the original folder's contents or history. `TensorFlow-PyTorch-Forecasting-Dashboard` remains
-unchanged, in place, alongside this one. Everything from there on — the Spark migration, the streaming
+This project began as [`TensorFlow-PyTorch-Forecasting-Dashboard`](https://github.com/MAOFILHO/TensorFlow-PyTorch-Forecasting-Dashboard) — the original batch
+dashboard: TensorFlow and PyTorch with just pandas + FastAPI + React. It was copied from the original as
+a starting point, then built up with the event-driven layers (Spark ETL, Kafka streaming, Airflow
+orchestration) without touching the original project's contents or history. Both projects were later split
+out of the `Portfolio-Projects` monorepo into their own repositories. Everything from there on — the Spark migration, the streaming
 layer, the orchestration DAG, the cloud deploy tooling — is new work on top of that starting point.
 
 

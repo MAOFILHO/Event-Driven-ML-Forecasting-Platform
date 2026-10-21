@@ -3,10 +3,10 @@
 ## v0.7.0 — Airflow DAG orchestration
 
 Copied from `TensorFlow-PyTorch-Forecasting-Dashboard` (see README's
-"Project history") into this new sibling folder,
-`Event-Driven-ML-Forecasting-Platform`, in the same `Portfolio-Projects`
-monorepo, to add Spark, Kafka, and Airflow without touching the original
-folder's contents or history. The three phases below (v0.5.0–v0.7.0) were all
+"Project history") into a new project, `Event-Driven-ML-Forecasting-Platform`
+(then a sibling folder in the `Portfolio-Projects` monorepo, now its own
+repository), to add Spark, Kafka, and Airflow without touching the original
+project's contents or history. The three phases below (v0.5.0–v0.7.0) were all
 built in this new folder.
 
 - Added `dags/forecasting_pipeline_dag.py`: validate_raw_data → run_pyspark_etl

@@ -1,19 +1,16 @@
-name: Event-Driven-ML-Forecasting-Platform — Deploy to Azure
+name: Deploy to Azure
 
 # Manual-only (workflow_dispatch): a human must explicitly click "Run
 # workflow" -- there is no automatic trigger on push (see
-# event-driven-ml-forecasting-platform-ci.yml for the free, no-cost gate).
+# ci.yml for the free, no-cost gate).
 # Uses secretless federated (OIDC) Azure credentials against a dedicated,
-# narrowly-scoped app registration (NOT the surveil-github-oidc app used by
-# azure-agentic-video-surveillance-deploy.yml -- see
-# cloud/infra/forecast-deployer-role.json for why this project has its own
-# custom role instead of reusing that broader Contributor identity).
+# narrowly-scoped app registration -- see cloud/infra/forecast-deployer-role.json
+# for why this project has its own least-privilege custom role instead of a
+# broad Contributor identity. The app's federated credential must trust
+# repo:MAOFILHO/Event-Driven-ML-Forecasting-Platform:ref:refs/heads/main.
 #
-# Uses FORECAST_AZURE_* variable names, not the plain AZURE_* names the
-# video-surveillance deploy workflow uses -- this repo's GitHub variables
-# are shared across every workflow, and these two projects authenticate as
-# two different Azure AD apps, so they need distinct variable names to
-# avoid one overwriting the other.
+# The FORECAST_AZURE_* variable names are kept from when this project shared
+# a repo with other Azure projects that used the plain AZURE_* names.
 on:
   workflow_dispatch:
     inputs:
@@ -39,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: Event-Driven-ML-Forecasting-Platform/cloud/deploy
+        working-directory: cloud/deploy
     steps:
       - uses: actions/checkout@v4
 

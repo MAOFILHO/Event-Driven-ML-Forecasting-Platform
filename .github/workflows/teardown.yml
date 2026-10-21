@@ -1,4 +1,4 @@
-name: Event-Driven-ML-Forecasting-Platform — Teardown Azure Deploy
+name: Teardown Azure Deploy
 
 # Standalone teardown, separate from the deploy workflow's own optional
 # `teardown_after` input: this is for the normal "I deployed locally (or via
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: Event-Driven-ML-Forecasting-Platform/cloud/deploy
+        working-directory: cloud/deploy
     steps:
       - uses: actions/checkout@v4
 

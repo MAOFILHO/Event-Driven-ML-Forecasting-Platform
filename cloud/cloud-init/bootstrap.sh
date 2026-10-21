@@ -25,9 +25,9 @@
 #   .failed  -- something went wrong; contents are the error
 set -euo pipefail
 
-REPO_URL="https://github.com/MAOFILHO/Portfolio-Projects.git"
+REPO_URL="https://github.com/MAOFILHO/Event-Driven-ML-Forecasting-Platform.git"
 APP_DIR="/opt/app"
-PROJECT_DIR="$APP_DIR/Portfolio-Projects/Event-Driven-ML-Forecasting-Platform"
+PROJECT_DIR="$APP_DIR/Event-Driven-ML-Forecasting-Platform"
 COMPOSE_DIR="$PROJECT_DIR/cloud/docker"
 LOG="/var/log/forecasting-bootstrap.log"
 PUBLIC_IP="__PUBLIC_IP__"
@@ -58,8 +58,8 @@ apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-buildx-plugi
 systemctl enable --now docker
 
 echo "--- cloning $REPO_URL (public repo, no credentials needed) ---"
-rm -rf "$APP_DIR/Portfolio-Projects"
-git clone --depth 1 "$REPO_URL" "$APP_DIR/Portfolio-Projects" \
+rm -rf "$PROJECT_DIR"
+git clone --depth 1 "$REPO_URL" "$PROJECT_DIR" \
     || fail "git clone failed"
 
 # git clone runs as root, so the checked-in output PNGs/JSONs under
